@@ -6,6 +6,10 @@ dependencies:
     # Base depends
   - python
   - pip
+  - numpy
+  - math
+  - copy
+  - networkx
 
     # Testing
   - pytest
