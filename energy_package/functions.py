@@ -12,7 +12,6 @@ class BitString:
     def __init__(self, N):
         self.N = N
         self.config = np.zeros(N, dtype=int) 
-        return self
 
     def __repr__(self):
         out = ""
@@ -113,8 +112,6 @@ class IsingHamiltonian:
     def __init__(self, G : nx.Graph):
         self.G = G
         self.mu = np.array([0 for i in range(len(G))])
-        
-        return self
     
     def energy(self, bs: BitString):
         """Compute energy of configuration, `bs`
