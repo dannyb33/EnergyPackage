@@ -8,6 +8,7 @@ dependencies:
   - pip
   - numpy
   - networkx
+  - matplotlib.pyplot
 
     # Testing
   - pytest
