@@ -192,9 +192,6 @@ class IsingHamiltonian:
         return E, M, HC, MS
     
 class MonteCarlo:
-    def __init__(self, ham:IsingHamiltonian):
-        self.ham = ham
-        
     """
     Initialize configuration, i 
     Loop over Monte Carlo steps	    
@@ -207,6 +204,10 @@ class MonteCarlo:
                 Reject 
         Update average values with updated i
     """
+    
+    def __init__(self, ham:IsingHamiltonian):
+        self.ham = ham
+        
     def run(self, T:int, n_samples:int, n_burn:int):
         bs = BitString(len(self.ham.G))
         E = []
