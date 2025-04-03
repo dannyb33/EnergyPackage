@@ -109,6 +109,9 @@ class BitString:
             
             
 class IsingHamiltonian:
+    """
+    Class to implement ising hamiltonian functions, compute energy, various average values
+    """
     
     def __init__(self, G : nx.Graph):
         self.G = G
@@ -152,8 +155,6 @@ class IsingHamiltonian:
     def compute_average_values(self, T: float):
         
         bs = BitString(len(self.G))
-
-        # Write your function here!
 
         E = 0.0
         M = 0.0
