@@ -3,7 +3,8 @@
 import numpy as np
 import math      
 import copy as cp 
-import networkx as nx 
+import networkx as nx
+import random as rand
 
 class BitString:
     """
@@ -140,6 +141,9 @@ class IsingHamiltonian:
         
         return sum
     
+    def magnetization(self, bs: BitString):
+        return (bs.on() - bs.off())
+    
     def set_mu(self, mus:np.array):
         self.mu = mus
         
@@ -185,6 +189,60 @@ class IsingHamiltonian:
         MS = (MM-M**2)*(T**-1)
         
         return E, M, HC, MS
+    
+class MonteCarlo:
+    def __init__(self, ham:IsingHamiltonian):
+        self.ham = ham
+        
+    """
+    Initialize configuration, i 
+    Loop over Monte Carlo steps	    
+        Loop over sites, n
+            Propose new configuration, j, by flipping site, n.
+            Compute flipping probability, W(i→j). 
+            If  W(i→j) is greater than a randomly chosen number between 0 and 1, 
+                Accept (i = j), 
+            else: 
+                Reject 
+        Update average values with updated i
+    """
+    def run(self, T:int, n_samples:int, n_burn:int):
+        bs = BitString(len(self.ham.G))
+        E = []
+        M = []
+        
+        for i in range(n_samples):
+            curr_en = self.ham.energy(bs)
+            
+            for j in range(len(bs)):
+                bs.flip_site(j)
+                check_en = self.ham.energy(bs)
+                
+                if self.flip_prob(T, curr_en, check_en) <= rand.random():
+                    bs.flip_site(j)
+                else:
+                    curr_en = check_en
+            
+            if i >= n_burn:
+                E.append(self.ham.energy(bs))
+                M.append(self.ham.magnetization(bs))
+        
+        return E, M
+                       
+            
+    """
+    Calculate probability of moving from state with i energy to j energy at T temp
+    """
+    def flip_prob(self, T:int, i_en:float, j_en:float):
+        if i_en >= j_en:
+            return 1
+        else:
+            return np.exp(-(j_en - i_en) / T)
+                    
+                    
+                
+                
+          
     
 
 if __name__ == "__main__":
