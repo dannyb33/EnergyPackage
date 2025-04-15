@@ -144,14 +144,40 @@ class IsingHamiltonian:
         
         return sum
     
+    """Return magnetization of bitstring
+
+        Parameters
+        ----------
+        bs   : Bitstring
+            input configuration
+        Returns
+        -------
+        magnetization  : int
+            Magnetization of the input configuration
+        """
     def magnetization(self, bs: BitString):
         return (bs.on() - bs.off())
     
+    """Set mu array of hamiltonian
+    
+        Parameters
+        ----------
+        mus   : np.array
+            array of mus
+        """
     def set_mu(self, mus:np.array):
         self.mu = mus
         
         return self
 
+    """Compute average energy, magnetization, heat capacity, and
+       magnetic susceptibility of hamiltonian at a given temp
+    
+        Parameters
+        ----------
+        T   : float
+            temperature to compute at
+        """
     def compute_average_values(self, T: float):
         
         bs = BitString(len(self.G))
@@ -193,6 +219,13 @@ class IsingHamiltonian:
     
 class MonteCarlo:
     """
+    Class to implement montecarlo functions to compute average values of energy and magnetism
+    """
+    
+    def __init__(self, ham:IsingHamiltonian):
+        self.ham = ham
+        
+    """
     Initialize configuration, i 
     Loop over Monte Carlo steps	    
         Loop over sites, n
@@ -203,12 +236,18 @@ class MonteCarlo:
             else: 
                 Reject 
         Update average values with updated i
-    """
-    
-    def __init__(self, ham:IsingHamiltonian):
-        self.ham = ham
         
-    def run(self, T:int, n_samples:int, n_burn:int):
+    Parameters
+        ----------
+        T   : float
+            temperature to compute at
+        n_samples: int
+            number of samples to run
+        n_burn: int
+            nuber of samples to burn before saving measurements
+    
+    """    
+    def run(self, T:float, n_samples:int, n_burn:int):
         bs = BitString(len(self.ham.G))
         E = []
         M = []
@@ -230,22 +269,32 @@ class MonteCarlo:
                 M.append(self.ham.magnetization(bs))
         
         return E, M
-                       
-            
+                                
     """
     Calculate probability of moving from state with i energy to j energy at T temp
+    
+    Parameters
+        ----------
+        T   : float
+            temperature to compute at
+        i_en: float
+            energy of initial configuration
+        j_en: float
+            energy of desired configuration
+            
+    Returns
+        -------
+        probability  : float
+            probability of moving to desired configuration
+        
     """
-    def flip_prob(self, T:int, i_en:float, j_en:float):
+    def flip_prob(self, T:float, i_en:float, j_en:float):
         if i_en >= j_en:
-            return 1
+            return 1.0
         else:
             return np.exp(-(j_en - i_en) / T)
                     
                     
-                
-                
-          
-    
 
 if __name__ == "__main__":
     # Do something if this file is invoked on its own
