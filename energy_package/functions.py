@@ -120,9 +120,6 @@ class IsingHamiltonian:
     def energy(self, bs: BitString):
         """Compute energy of configuration, `bs`
 
-            .. math::
-                E = \\left<\\hat{H}\\right>
-
         Parameters
         ----------
         bs   : Bitstring
@@ -217,6 +214,17 @@ class IsingHamiltonian:
         
         return E, M, HC, MS
     
+    def delta_e(self, bs:BitString, change_index:int):
+        b = bs.config * -2 + 1
+        delta = 0
+        
+        for neighbor in self.G.neighbors(change_index):
+            delta += 2 * b[change_index] * b[neighbor] * self.G[change_index][neighbor]["weight"]
+        
+        delta += 2 * self.mu[change_index] * b[change_index]
+        
+        return delta
+    
 class MonteCarlo:
     """
     Class to implement montecarlo functions to compute average values of energy and magnetism
@@ -252,17 +260,13 @@ class MonteCarlo:
         E = []
         M = []
         
-        for i in range(n_samples):
-            curr_en = self.ham.energy(bs)
-            
+        for i in range(n_samples):            
             for j in range(len(bs)):
+                delta = self.ham.delta_e(bs, j)
                 bs.flip_site(j)
-                check_en = self.ham.energy(bs)
-                
-                if self.flip_prob(T, curr_en, check_en) <= rand.random():
+                                
+                if delta <= 0 or np.exp(-delta / T) < rand.random():
                     bs.flip_site(j)
-                else:
-                    curr_en = check_en
             
             if i >= n_burn:
                 E.append(self.ham.energy(bs))
