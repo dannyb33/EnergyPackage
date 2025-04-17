@@ -379,6 +379,7 @@ class MonteCarlo:
     def flip_prob(self, T:float, i_en:float, j_en:float):
         """
         Calculate probability of moving from state with i energy to j energy at T temp
+        Deprecated, using delta energy for run function now
         
         Parameters
         ----------
