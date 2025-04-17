@@ -15,10 +15,7 @@ class BitString:
         self.config = np.zeros(N, dtype=int) 
 
     def __repr__(self):
-        out = ""
-        for i in self.config:
-            out += str(i)
-        return out
+        return str(self.config)
 
     def __eq__(self, other):        
         return all(self.config == other.config)
@@ -219,9 +216,9 @@ class IsingHamiltonian:
         delta = 0
         
         for neighbor in self.G.neighbors(change_index):
-            delta += 2 * b[change_index] * b[neighbor] * self.G[change_index][neighbor]["weight"]
+            delta += 2 * b[change_index] * b[neighbor] * self.G.edges[(change_index, neighbor)]["weight"]
         
-        delta += 2 * self.mu[change_index] * b[change_index]
+        delta += -2 * self.mu[change_index] * b[change_index]
         
         return delta
     
@@ -263,7 +260,6 @@ class MonteCarlo:
         for i in range(n_samples):            
             for j in range(len(bs)):
                 delta = self.ham.delta_e(bs, j)
-                bs.flip_site(j)
                                 
                 if delta <= 0 or np.exp(-delta / T) < rand.random():
                     bs.flip_site(j)
