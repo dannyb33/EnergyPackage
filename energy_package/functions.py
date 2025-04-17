@@ -22,18 +22,7 @@ class BitString:
         self.config = np.zeros(N, dtype=int) 
 
     def __repr__(self):
-        """
-        Return string representation of bitstring
-        
-        Returns
-        -------
-        out : string
-            string representation of bitstring
-        """
-        out = ""
-        for i in self.config:
-            out += str(i)
-        return out
+        return str(self.config)
 
     def __eq__(self, other):      
         """
@@ -241,7 +230,7 @@ class IsingHamiltonian:
     def compute_average_values(self, T: float):
         """
         Compute average energy, magnetization, heat capacity, and
-       magnetic susceptibility of hamiltonian at a given temp
+        magnetic susceptibility of hamiltonian at a given temp
     
         Parameters
         ----------
@@ -297,6 +286,33 @@ class IsingHamiltonian:
         
         return E, M, HC, MS
     
+    def delta_e(self, bs:BitString, change_index:int):
+        """
+        Compute difference in energy of changine one index of a bitstring
+    
+        Parameters
+        ----------
+        bs  : BitString
+            initial bitstring
+        change_index : int
+            index to change for potential bitstring
+            
+        Returns
+        -------
+        delta: float
+            difference in energy between the two bitstrings
+        """
+        
+        b = bs.config * -2 + 1
+        delta = 0
+        
+        for neighbor in self.G.neighbors(change_index):
+            delta += -2 * b[change_index] * b[neighbor] * self.G.edges[(change_index, neighbor)]["weight"]
+        
+        delta += -2 * self.mu[change_index] * b[change_index]
+        
+        return delta
+    
 class MonteCarlo:
     """
     Class to implement montecarlo functions to compute average values of energy and magnetism
@@ -346,17 +362,12 @@ class MonteCarlo:
         E = []
         M = []
         
-        for i in range(n_samples):
-            curr_en = self.ham.energy(bs)
-            
+        for i in range(n_samples):            
             for j in range(len(bs)):
-                bs.flip_site(j)
-                check_en = self.ham.energy(bs)
-                
-                if self.flip_prob(T, curr_en, check_en) <= rand.random():
+                delta = self.ham.delta_e(bs, j)
+                                
+                if delta <= 0 or np.exp(-delta / T) > rand.random():
                     bs.flip_site(j)
-                else:
-                    curr_en = check_en
             
             if i >= n_burn:
                 E.append(self.ham.energy(bs))
