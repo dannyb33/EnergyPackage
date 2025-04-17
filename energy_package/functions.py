@@ -216,7 +216,7 @@ class IsingHamiltonian:
         delta = 0
         
         for neighbor in self.G.neighbors(change_index):
-            delta += 2 * b[change_index] * b[neighbor] * self.G.edges[(change_index, neighbor)]["weight"]
+            delta += -2 * b[change_index] * b[neighbor] * self.G.edges[(change_index, neighbor)]["weight"]
         
         delta += -2 * self.mu[change_index] * b[change_index]
         
@@ -261,7 +261,7 @@ class MonteCarlo:
             for j in range(len(bs)):
                 delta = self.ham.delta_e(bs, j)
                                 
-                if delta <= 0 or np.exp(-delta / T) < rand.random():
+                if delta <= 0 or np.exp(-delta / T) > rand.random():
                     bs.flip_site(j)
             
             if i >= n_burn:
