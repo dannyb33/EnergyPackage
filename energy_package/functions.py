@@ -1,5 +1,3 @@
-"""Provide the primary functions."""
-
 import numpy as np
 import math      
 import copy as cp 
@@ -10,25 +8,68 @@ class BitString:
     """
     Simple class to implement a config of bits
     """
+    
     def __init__(self, N):
+        """
+        Set bitstring length, default all values to 0
+        
+        Parameters
+        ----------
+        N    : int
+            initial bitstring length
+        """
         self.N = N
         self.config = np.zeros(N, dtype=int) 
 
     def __repr__(self):
+        """
+        Return string representation of bitstring
+        
+        Returns
+        -------
+        out : string
+            string representation of bitstring
+        """
         out = ""
         for i in self.config:
             out += str(i)
         return out
 
-    def __eq__(self, other):        
+    def __eq__(self, other):      
+        """
+        Return true if bitstrings are identical, false otherwise
+        
+        Parameters
+        ----------
+        other    : BitString
+            Bitstring to compare
+        
+        Returns
+        -------
+        eq : boolean
+            true if bitstrings are identical
+        """  
         return all(self.config == other.config)
     
     def __len__(self):
+        """
+        Return length of bitstring
+        
+        Returns
+        -------
+        len : int
+            length of bitstring
+        """
         return len(self.config)
 
     def on(self):
         """
         Return number of bits that are on
+        
+        Returns
+        -------
+        sum : int
+            number of on bits
         """
         sum = 0
         for i in self.config:
@@ -40,7 +81,12 @@ class BitString:
 
     def off(self):
         """
-        Return number of bits that are on
+        Return number of bits that are off
+        
+        Returns
+        -------
+        sum : int
+            number of off bits
         """
         sum = 0
         for i in self.config:
@@ -52,6 +98,11 @@ class BitString:
     def flip_site(self,i):
         """
         Flip the bit at site i
+        
+        Parameters
+        ----------
+        i    : int
+            index of site to flip
         """
         self.config[i] = -1*(self.config[i] - 1)
         return self
@@ -59,6 +110,11 @@ class BitString:
     def integer(self):
         """
         Return the decimal integer corresponding to BitString
+        
+        Returns
+        -------
+        sum : int
+            integer corresponding to bitstring
         """
         exp = 0
         sum = 0
@@ -71,6 +127,11 @@ class BitString:
     def set_config(self, s:list[int]):
         """
         Set the config from a list of integers
+        
+        Parameters
+        ----------
+        s    : list[int]
+            input list of ints
         """
         self.config = np.array(s)
         return self
@@ -83,10 +144,6 @@ class BitString:
         ----------
         dec    : int
             input integer
-            
-        Returns
-        -------
-        Bitconfig
         """
              
         temp = dec
@@ -114,22 +171,29 @@ class IsingHamiltonian:
     """
     
     def __init__(self, G : nx.Graph):
+        """
+        Set hamiltonian graph as G, initialize mu array with 0s
+
+        Parameters
+        ----------
+        G   : nx.Graph
+            hamiltonian graph
+        """
         self.G = G
         self.mu = np.array([0 for i in range(len(G))])
     
     def energy(self, bs: BitString):
-        """Compute energy of configuration, `bs`
-
-            .. math::
-                E = \\left<\\hat{H}\\right>
+        """
+        Compute energy of configuration, `bs`
 
         Parameters
         ----------
         bs   : Bitstring
             input configuration
+            
         Returns
         -------
-        energy  : float
+        sum  : float
             Energy of the input configuration
         """
         sum = 0
@@ -143,42 +207,58 @@ class IsingHamiltonian:
             sum += self.mu[i]*-(bs.config[i]*-2+1)
         
         return sum
-    
-    """Return magnetization of bitstring
+      
+    def magnetization(self, bs: BitString):
+        """
+        Return magnetization of bitstring
 
         Parameters
         ----------
         bs   : Bitstring
             input configuration
+            
         Returns
         -------
         magnetization  : int
             Magnetization of the input configuration
         """
-    def magnetization(self, bs: BitString):
         return (bs.on() - bs.off())
     
-    """Set mu array of hamiltonian
+    def set_mu(self, mus:np.array):
+        """
+        Set mu array of hamiltonian
     
         Parameters
         ----------
         mus   : np.array
             array of mus
         """
-    def set_mu(self, mus:np.array):
         self.mu = mus
         
         return self
 
-    """Compute average energy, magnetization, heat capacity, and
+    
+    def compute_average_values(self, T: float):
+        """
+        Compute average energy, magnetization, heat capacity, and
        magnetic susceptibility of hamiltonian at a given temp
     
         Parameters
         ----------
         T   : float
             temperature to compute at
+            
+        Returns
+        -------
+        E  : float
+            Average energy of the hamiltonian
+        M  : float
+            Average magnetization of the hamiltonian
+        HC  : float
+            Average heat capacity of the hamiltonian
+        MS  : float
+            Average magnetic susceptibility of the hamiltonian
         """
-    def compute_average_values(self, T: float):
         
         bs = BitString(len(self.G))
 
@@ -223,21 +303,30 @@ class MonteCarlo:
     """
     
     def __init__(self, ham:IsingHamiltonian):
+        """
+        Assign hamiltonian for use
+
+        Parameters
+        ----------
+        ham   : IsingHamiltonian
+            desired hamiltonian
+        """
         self.ham = ham
         
-    """
-    Initialize configuration, i 
-    Loop over Monte Carlo steps	    
-        Loop over sites, n
-            Propose new configuration, j, by flipping site, n.
-            Compute flipping probability, W(i→j). 
-            If  W(i→j) is greater than a randomly chosen number between 0 and 1, 
-                Accept (i = j), 
-            else: 
-                Reject 
-        Update average values with updated i
+    def run(self, T:float, n_samples:int, n_burn:int):
+        """
+        Initialize configuration, i 
+        Loop over Monte Carlo steps	    
+            Loop over sites, n
+                Propose new configuration, j, by flipping site, n.
+                Compute flipping probability, W(i→j). 
+                If  W(i→j) is greater than a randomly chosen number between 0 and 1, 
+                    Accept (i = j), 
+                else: 
+                    Reject 
+            Update average values with updated i
         
-    Parameters
+        Parameters
         ----------
         T   : float
             temperature to compute at
@@ -245,9 +334,14 @@ class MonteCarlo:
             number of samples to run
         n_burn: int
             nuber of samples to burn before saving measurements
-    
-    """    
-    def run(self, T:float, n_samples:int, n_burn:int):
+            
+        Returns
+        -------
+        E  : list
+            list of average energy values
+        M  : list
+            list of average magnetization values
+        """    
         bs = BitString(len(self.ham.G))
         E = []
         M = []
@@ -270,10 +364,12 @@ class MonteCarlo:
         
         return E, M
                                 
-    """
-    Calculate probability of moving from state with i energy to j energy at T temp
     
-    Parameters
+    def flip_prob(self, T:float, i_en:float, j_en:float):
+        """
+        Calculate probability of moving from state with i energy to j energy at T temp
+        
+        Parameters
         ----------
         T   : float
             temperature to compute at
@@ -281,14 +377,12 @@ class MonteCarlo:
             energy of initial configuration
         j_en: float
             energy of desired configuration
-            
-    Returns
+                
+        Returns
         -------
         probability  : float
             probability of moving to desired configuration
-        
-    """
-    def flip_prob(self, T:float, i_en:float, j_en:float):
+        """
         if i_en >= j_en:
             return 1.0
         else:
