@@ -5,7 +5,7 @@ energy_package
 [![codecov](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/energy_package/branch/main/graph/badge.svg)](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/energy_package/branch/main)
 
 
-A python package for monte_carlo functions.
+A python package for functions relating to the Ising Model
 
 ### Copyright
 
