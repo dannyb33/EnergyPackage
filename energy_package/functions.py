@@ -170,6 +170,7 @@ class IsingHamiltonian:
         """
         self.G = G
         self.mu = np.array([0 for i in range(len(G))])
+        self.N = len(self.mu)
     
     def energy(self, bs: BitString):
         """
