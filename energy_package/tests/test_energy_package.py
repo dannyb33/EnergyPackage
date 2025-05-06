@@ -18,6 +18,21 @@ def test_energy_package_imported():
     """Sample test, will always pass so long as import statement worked."""
     assert "energy_package" in sys.modules
     
+def test_bitstr():
+    """Test functions of bitstring class"""
+    bit1 = ep.BitString(5)
+    bit2 = ep.BitString(5)
+    assert(len(bit1) == 5)
+    assert(str(bit1) == "00000")
+    assert(bit1.__eq__(bit2))
+    
+    bit1.set_integer_config(3)
+    bit2.set_config([0,0,0,1,1])
+    assert(bit1.__eq__(bit2))
+    
+    assert(bit1.integer == 3)
+    
+    
 def test_energy():
     """Test energy() Function"""
     
@@ -62,4 +77,6 @@ def test_average():
     assert(np.isclose(M,   -0.00000000))
     assert(np.isclose(HC,   0.31925472))
     assert(np.isclose(MS,   0.01202961))
+    
+    
 
