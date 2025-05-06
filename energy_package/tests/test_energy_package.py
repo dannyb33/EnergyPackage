@@ -30,7 +30,7 @@ def test_bitstr():
     bit2.set_config([0,0,0,1,1])
     assert(bit1.__eq__(bit2))
     
-    assert(bit1.integer == 3)
+    assert(bit1.integer() == 3)
     
     
 def test_energy():
