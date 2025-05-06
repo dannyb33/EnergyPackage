@@ -2,7 +2,7 @@ energy_package
 ==============================
 [//]: # (Badges)
 [![CI](https://github.com/dannyb33/EnergyPackage/actions/workflows/CI.yaml/badge.svg)](https://github.com/dannyb33/EnergyPackage/actions/workflows/CI.yaml)
-[![codecov](https://codecov.io/gh/dannyb33/energy_package/branch/main/graph/badge.svg)](https://codecov.io/gh/dannyb33/energy_package/branch/main)
+[![codecov](https://codecov.io/gh/dannyb33/EnergyPackage/graph/badge.svg?token=4M1TFSOPJE)](https://codecov.io/gh/dannyb33/EnergyPackage)
 
 
 A python package for functions relating to the Ising Model
