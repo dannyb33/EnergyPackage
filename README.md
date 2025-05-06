@@ -1,8 +1,8 @@
 energy_package
 ==============================
 [//]: # (Badges)
-[![GitHub Actions Build Status](https://github.com/REPLACE_WITH_OWNER_ACCOUNT/energy_package/workflows/CI/badge.svg)](https://github.com/REPLACE_WITH_OWNER_ACCOUNT/energy_package/actions?query=workflow%3ACI)
-[![codecov](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/energy_package/branch/main/graph/badge.svg)](https://codecov.io/gh/REPLACE_WITH_OWNER_ACCOUNT/energy_package/branch/main)
+[![CI](https://github.com/dannyb33/EnergyPackage/actions/workflows/CI.yaml/badge.svg)](https://github.com/dannyb33/EnergyPackage/actions/workflows/CI.yaml)
+[![codecov](https://codecov.io/gh/dannyb33/EnergyPackage/graph/badge.svg?token=4M1TFSOPJE)](https://codecov.io/gh/dannyb33/EnergyPackage)
 
 
 A python package for functions relating to the Ising Model
