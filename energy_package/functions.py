@@ -22,7 +22,10 @@ class BitString:
         self.config = np.zeros(N, dtype=int) 
 
     def __repr__(self):
-        return str(self.config)
+        string = ""
+        for i in self.config:
+            string += str(i)
+        return string
 
     def __eq__(self, other):      
         """
