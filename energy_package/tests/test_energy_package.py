@@ -96,7 +96,7 @@ def test_delta_e():
     
     bit1.set_integer_config(3)
     
-    assert(ham.delta_e(bit1, 4) == -8.0)
+    assert(ham.delta_e(bit1, 2) == -8.0)
 
 def test_magnetization():
     """Test magnetization() function"""
