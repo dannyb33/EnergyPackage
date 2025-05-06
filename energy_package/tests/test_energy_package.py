@@ -78,5 +78,52 @@ def test_average():
     assert(np.isclose(HC,   0.31925472))
     assert(np.isclose(MS,   0.01202961))
     
+def test_delta_e():
+    """Test delta_e() function"""
+
+    
+    N = 6
+    Jval = 2.0
+    G = nx.Graph()
+    G.add_nodes_from([i for i in range(N)])
+    G.add_edges_from([(i,(i+1)% G.number_of_nodes() ) for i in range(N)])
+    for e in G.edges:
+        G.edges[e]['weight'] = Jval
+        
+    
+    bit1 = ep.BitString(N)
+    ham = ep.IsingHamiltonian(G)
+    
+    bit1.set_integer_config(3)
+    
+    assert(ham.delta_e(bit1, 4) == -8.0)
+
+def test_magnetization():
+    """Test magnetization() function"""
+    
+    N = 6
+    Jval = 2.0
+    G = nx.Graph()
+    G.add_nodes_from([i for i in range(N)])
+    G.add_edges_from([(i,(i+1)% G.number_of_nodes() ) for i in range(N)])
+    for e in G.edges:
+        G.edges[e]['weight'] = Jval
+        
+    
+    bit1 = ep.BitString(N)
+    bit1.set_integer_config(3)
+    ham = ep.IsingHamiltonian(G)
+    
+    assert(ham.magnetization(bit1) == -2)
+    
+    
+    
+    
+
+
+    
+    
+
+    
     
 
