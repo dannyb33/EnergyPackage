@@ -5,7 +5,31 @@ energy_package
 [![codecov](https://codecov.io/gh/dannyb33/EnergyPackage/graph/badge.svg?token=4M1TFSOPJE)](https://codecov.io/gh/dannyb33/EnergyPackage)
 
 
-A python package for functions relating to the Ising Model
+# Ising Model Simulation Package
+
+**Technologies:** Python, NumPy, NetworkX, Simulation & Modeling
+
+---
+
+## Overview
+
+Built a modular Python package to simulate bitstring-based configurations and interactions using custom `BitString` and `IsingHamiltonian` classes.
+
+Implemented both exact and Monte Carlo algorithms to estimate average values like energy and magnetization of systems at varying temperatures.
+
+Used NetworkX to define and analyze graph-based systems, with optimized update methods for efficient simulation performance.
+
+---
+
+## Features
+
+- Custom bitstring configuration handling with `BitString` class
+- Hamiltonian calculations for Ising models via `IsingHamiltonian` class
+- Exact and Monte Carlo methods for statistical estimation
+- Graph-based system modeling using NetworkX
+- Performance optimizations for simulation updates
+
+---
 
 ### Copyright
 
