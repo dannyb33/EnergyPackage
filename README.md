@@ -31,10 +31,6 @@ Used NetworkX to define and analyze graph-based systems, with optimized update m
 
 ---
 
-### Copyright
-
-Copyright (c) 2025, Daniel Benish
-
 ## Usage Instructions
 
 1. **Create a BitString configuration**
@@ -88,6 +84,10 @@ E, M, HC, MS = ham.compute_average_values(1) # Temperature = 1
 print(f"Energy: {E}, Magnetization: {M}")
 
 ```
+
+### Copyright
+
+Copyright (c) 2025, Daniel Benish
 
 #### Acknowledgements
  
