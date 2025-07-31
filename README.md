@@ -87,7 +87,7 @@ magnetization = ham.magnetization(bitstr)
 E, M, HC, MS = ham.compute_average_values(1) # Temperature = 1
 print(f"Energy: {E}, Magnetization: {M}")
 
-
+```
 
 #### Acknowledgements
  
